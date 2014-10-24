@@ -28,7 +28,7 @@ if [[ ! $? -eq 0 ]]; then
   exit 1
 fi
 
-if [ SETUP_PARTITIONS ] # {{{
+if $SETUP_PARTITIONS # {{{
 then
 # Create partitions
 parted -s /dev/sda mktable msdos
@@ -41,7 +41,7 @@ mkfs.ext4 $PARTITION_ROOT
 fi
 # }}}
 
-if [ MOUNT_PARTITIONS ] # {{{
+if $MOUNT_PARTITIONS # {{{
 then
 # Set up /mnt
 mount /dev/sda2 /mnt
@@ -50,7 +50,7 @@ mount /dev/sda1 /mnt/boot
 fi
 # }}}
 
-if [ INSTALL_BASE ] # {{{
+if $INSTALL_BASE # {{{
 then
 # Rankmirrors to make this faster (though it takes a while)
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
@@ -68,7 +68,7 @@ cp /etc/pacman.d/mirrorlist* /mnt/etc/pacman.d
 fi
 # }}}
 
-if [ CONFIGURE_SYSTEM ] # {{{
+if $CONFIGURE_SYSTEM # {{{
 then
 # System configuration
 arch-chroot /mnt /bin/bash <<EOF
@@ -185,7 +185,7 @@ EOF
 fi
 # }}}
 
-if [ INSTALL_VIRTUALBOX_MODULES ] # {{{
+if $INSTALL_VIRTUALBOX_MODULES # {{{
 then
 arch-chroot /mnt /bin/bash <<EOF
 # Install vbox extensions and kernel modules
@@ -211,7 +211,7 @@ EOF
 fi
 # }}}
 
-if [ INSTALL_YAOURT ] # {{{
+if $INSTALL_YAOURT # {{{
 then
 arch-chroot /mnt /bin/bash <<EOF
 # Install yaourt
@@ -240,7 +240,7 @@ EOF
 fi
 # }}}
 
-if [ INSTALL_I3_WM ] # {{{
+if $INSTALL_I3_WM # {{{
 then
 arch-chroot /mnt /bin/bash <<EOF
 # Install xorg-server
@@ -281,7 +281,7 @@ EOF
 fi
 # }}}
 
-if [ INSTALL_BASIC_APPS ] # {{{
+if $INSTALL_BASIC_APPS # {{{
 then
 arch-chroot /mnt /bin/bash <<EOF
 # Install basic apps
@@ -303,7 +303,7 @@ END
 #ttf-ms-fonts
 EOF
 
-if [ INSTALL_I3_WM ]
+if $INSTALL_I3_WM
 then
 arch-chroot /mnt /bin/bash <<EOF
 # Set konsole as the default terminal
@@ -313,7 +313,7 @@ fi
 fi
 # }}}
 
-if [ MOUNT_PARTITIONS ] # {{{
+if $MOUNT_PARTITIONS # {{{
 then
 # Unmount
 umount -R /mnt
