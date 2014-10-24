@@ -291,7 +291,7 @@ gvim
 lxappearance
 kdebase-konsole
 kdebase-dolphin
-kde-l10-pl
+kde-l10n-pl
 firefox
 firefox-i18n-pl
 gst-plugins-good
