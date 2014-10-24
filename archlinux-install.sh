@@ -4,6 +4,8 @@ HOSTNAME="archlinux"
 ROOT_PASSWD="root"
 USER="silnar"
 USER_PASSWD="silnar"
+PARTITION_BOOT=/dev/sda1
+PARTITION_ROOT=/dev/sda2
 
 SETUP_PARTITIONS=true
 MOUNT_PARTITIONS=true
@@ -32,8 +34,6 @@ then
 parted -s /dev/sda mktable msdos
 parted -s /dev/sda mkpart primary 0% 100m
 parted -s /dev/sda mkpart primary 100m 100%
-PARTITION_BOOT=/dev/sda1
-PARTITION_ROOT=/dev/sda2
 
 # Create filesystems
 mkfs.ext2 $PARTITION_BOOT
