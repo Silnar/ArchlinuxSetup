@@ -215,13 +215,14 @@ if $INSTALL_YAOURT # {{{
 then
 arch-chroot /mnt /bin/bash <<EOF
 # Install yaourt
+pacman -S --noconfirm yajl
 pushd /tmp
 cat <<END | sudo -u $USER bash
 set -x
 curl -O https://aur.archlinux.org/packages/pa/package-query/package-query.tar.gz
 tar xzvf package-query.tar.gz
 cd package-query
-makepkg -s --noconfirm
+makepkg --noconfirm
 END
 pacman -U --noconfirm package-query/package-query*.tar.xz
 popd
@@ -232,7 +233,7 @@ set -x
 curl -O https://aur.archlinux.org/packages/ya/yaourt/yaourt.tar.gz
 tar xzvf yaourt.tar.gz
 cd yaourt
-makepkg -s --noconfirm
+makepkg --noconfirm
 END
 pacman -U --noconfirm yaourt/yaourt*.tar.xz
 popd
@@ -261,7 +262,7 @@ set -x
 curl -O https://aur.archlinux.org/packages/in/industrial-arch-lxdm/industrial-arch-lxdm.tar.gz
 tar xzvf industrial-arch-lxdm.tar.gz
 cd industrial-arch-lxdm
-makepkg -s --noconfirm
+makepkg --noconfirm
 END
 pacman -U --noconfirm industrial-arch-lxdm/industrial-arch-lxdm*.tar.xz
 popd
