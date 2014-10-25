@@ -185,32 +185,6 @@ EOF
 fi
 # }}}
 
-if $INSTALL_VIRTUALBOX_MODULES # {{{
-then
-arch-chroot /mnt /bin/bash <<EOF
-# Install vbox extensions and kernel modules
-pacman --noconfirm -S virtualbox-guest-utils virtualbox-guest-modules
-
-# Load vbox modules at boot
-cat > /etc/modules-load.d/virtualbox.conf << EOL
-vboxguest
-vboxsf
-vboxvideo
-EOL
-
-# Force load vbox modules now
-while read module
-  do modprobe "$module"
-done < /etc/modules-load.d/virtualbox.conf
-
-# Start vboxservice
-systemctl enable vboxservice
-systemctl start vboxservice
-echo "VBoxClient-all &" >> /etc/xprofile
-EOF
-fi
-# }}}
-
 if $INSTALL_YAOURT # {{{
 then
 arch-chroot /mnt /bin/bash <<EOF
@@ -278,6 +252,32 @@ i3status
 i3lock
 END
 
+EOF
+fi
+# }}}
+
+if $INSTALL_VIRTUALBOX_MODULES # {{{
+then
+arch-chroot /mnt /bin/bash <<EOF
+# Install vbox extensions and kernel modules
+pacman --noconfirm -S virtualbox-guest-utils virtualbox-guest-modules
+
+# Load vbox modules at boot
+cat > /etc/modules-load.d/virtualbox.conf << EOL
+vboxguest
+vboxsf
+vboxvideo
+EOL
+
+# Force load vbox modules now
+while read module
+  do modprobe "$module"
+done < /etc/modules-load.d/virtualbox.conf
+
+# Start vboxservice
+systemctl enable vboxservice
+systemctl start vboxservice
+echo "VBoxClient-all &" >> /etc/xprofile
 EOF
 fi
 # }}}
