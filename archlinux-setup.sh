@@ -1,5 +1,17 @@
 #!/bin/bash
 
+user=silnar
+
+pacman_grant_permissions() {
+  sed -i -e '/^#includedir \/etc\/sudoers.d/s/#//' /etc/sudoers
+  echo "%wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman" > /etc/sudoers.d/pacman
+}
+
+pacman_revoke_permissions() {
+  sed -i -e '/^includedir \/etc\/sudoers.d/s/^/#/' /etc/sudoers
+  rm /etc/sudoers.d/pacman
+}
+
 pacman_install_packages() {
   pacman --noconfirm -S $@
 }
@@ -20,5 +32,6 @@ aur_make_packages() {
 aur_install() {
   su - ${user} -c "yaourt --noconfirm -S $@"
 }
+
 
 # vim: fdm=marker
