@@ -46,9 +46,20 @@ fi
 # Install base {{{
 if $install_base
 then
-  # Rankmirrors to make this faster (though it takes a while)
+  # Download selected mirrors urls
+  url="https://www.archlinux.org/mirrorlist/?country=PL&country=DE&country=CZ&use_mirror_status=on"
+  tmpfile=$(mktemp --suffix=-mirrorlist)
+  curl -so ${tmpfile} ${url}
+
   mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
-  rankmirrors -n 6 /etc/pacman.d/mirrorlist.orig > /etc/pacman.d/mirrorlist
+  mv ${tmpfile} /etc/pacman.d/mirrorlist
+
+  # Rankmirrors to make this faster (though it takes a while)
+  cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.tmp
+  rankmirrors -n 3 /etc/pacman.d/mirrorlist.tmp > /etc/pacman.d/mirrorlist
+  rm /etc/pacman.d/mirrorlist.tmp
+
+  # Update pacman db
   pacman -Syy
 
   # Install base packages (take a coffee break if you have slow internet)
