@@ -64,5 +64,5 @@ MENU CMDLINEROW 11\\
 MENU HELPMSGROW 16\\
 MENU HELPMSGENDROW 29
   s/APPEND root=.*rw/APPEND root=${partition_root//\//\\/} rw/
-" syslinux.cfg
+" /boot/syslinux/syslinux.cfg
 
