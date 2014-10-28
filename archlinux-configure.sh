@@ -47,7 +47,7 @@ syslinux-install_update -i -a -m
 
 # Update syslinux config with correct root disk
 curl -o /boot/syslinux/splash.png https://projects.archlinux.org/archiso.git/plain/configs/releng/syslinux/splash.png
-sed -e "
+sed -i -e "
   /UI menu.c32/s/^/# /
   /UI vesamenu.c32/s/^#//
   /MENU BACKGROUND/s/^#//
