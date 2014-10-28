@@ -59,6 +59,7 @@ then
   cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.tmp
   rankmirrors -n 3 /etc/pacman.d/mirrorlist.tmp > /etc/pacman.d/mirrorlist
   rm /etc/pacman.d/mirrorlist.tmp
+  chmod +r /etc/pacman.d/mirrorlist
 
   # Update pacman db
   pacman -Syy
