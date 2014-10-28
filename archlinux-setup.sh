@@ -6,6 +6,9 @@ set -o pipefail
 readonly user="silnar"
 readonly user_password="silnar"
 
+readonly add_user=true
+readonly install_sudo=true
+readonly install_yaourt=true
 readonly install_virtualbox_modules=true
 readonly install_i3_wm=true
 readonly install_basic_apps=true
@@ -29,20 +32,32 @@ yaourt_install_packages() {
   su - ${user} -c "yaourt --noconfirm -S $*"
 }
 
-# Create user
-useradd -m -G wheel -s /bin/bash $user
-echo $user:$user_password | chpasswd
+# Create user {{{
+if $add_user
+then
+  useradd -m -G wheel -s /bin/bash $user
+  echo $user:$user_password | chpasswd
+fi
+# }}}
 
-# Install sudo
-pacman -S --noconfirm sudo
-sed -i '/%wheel ALL=(ALL) ALL/s/^# //' /etc/sudoers
+# Install sudo {{{
+if $install_sudo
+then
+  pacman -S --noconfirm sudo
+  sed -i '/%wheel ALL=(ALL) ALL/s/^# //' /etc/sudoers
+fi
+# }}}
 
 # Grant user permission to install pacman packages
 echo "%wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman" > /etc/sudoers.d/pacman
 
-# Install Yaourt
-aur_install_package "package-query"
-aur_install_package "yaourt"
+# Install Yaourt {{{
+if $install_yaourt
+then
+  aur_install_package "package-query"
+  aur_install_package "yaourt"
+fi
+# }}}
 
 # Gather packages to install
 arch_packages=()
@@ -98,8 +113,6 @@ then
   )
   aur_packages+=(
     ttf-ms-fonts
-    ttf-vista-fonts
-    ttf-win7-fonts
   )
 fi
 # }}}

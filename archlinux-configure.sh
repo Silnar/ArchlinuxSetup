@@ -47,60 +47,22 @@ syslinux-install_update -i -a -m
 
 # Update syslinux config with correct root disk
 curl -o /boot/syslinux/splash.png https://projects.archlinux.org/archiso.git/plain/configs/releng/syslinux/splash.png
-cat <<END > /boot/syslinux/syslinux.cfg
-UI vesamenu.c32
-DEFAULT arch
-PROMPT 0
-MENU TITLE Boot Menu
-MENU BACKGROUND splash.png
-TIMEOUT 50
-
-MENU WIDTH 78
-MENU MARGIN 4
-MENU ROWS 5
-MENU VSHIFT 10
-MENU TIMEOUTROW 13
-MENU TABMSGROW 11
-MENU CMDLINEROW 11
-MENU HELPMSGROW 16
+sed -e "
+  /UI menu.c32/s/^/# /
+  /UI vesamenu.c32/s/^#//
+  /MENU BACKGROUND/s/^#//
+  /UI vesamenu.c32/a\
+\\
+\\
+MENU WIDTH 78\\
+MENU MARGIN 4\\
+MENU ROWS 5\\
+MENU VSHIFT 10\\
+MENU TIMEOUTROW 13\\
+MENU TABMSGROW 11\\
+MENU CMDLINEROW 11\\
+MENU HELPMSGROW 16\\
 MENU HELPMSGENDROW 29
-
-# Refer to http://www.syslinux.org/wiki/index.php/Comboot/menu.c32
-
-MENU COLOR border       30;44   #40ffffff #a0000000 std
-MENU COLOR title        1;36;44 #9033ccff #a0000000 std
-MENU COLOR sel          7;37;40 #e0ffffff #20ffffff all
-MENU COLOR unsel        37;44   #50ffffff #a0000000 std
-MENU COLOR help         37;40   #c0ffffff #a0000000 std
-MENU COLOR timeout_msg  37;40   #80ffffff #00000000 std
-MENU COLOR timeout      1;37;40 #c0ffffff #00000000 std
-MENU COLOR msg07        37;40   #90ffffff #a0000000 std
-MENU COLOR tabmsg       31;40   #30ffffff #00000000 std
-
-
-LABEL arch
-       MENU LABEL Arch Linux
-       LINUX ../vmlinuz-linux
-       APPEND root=$partition_root rw
-       INITRD ../initramfs-linux.img
-
-
-LABEL archfallback
-       MENU LABEL Arch Linux Fallback
-       LINUX ../vmlinuz-linux
-       APPEND root=$partition_root rw
-       INITRD ../initramfs-linux-fallback.img
-
-LABEL hdt
-       MENU LABEL HDT (Hardware Detection Tool)
-       COM32 hdt.c32
-
-LABEL reboot
-       MENU LABEL Reboot
-       COM32 reboot.c32
-
-LABEL shutdown
-       MENU LABEL Power Off
-       COMBOOT poweroff.com
-END
+  s/APPEND root=.*rw/APPEND root=${partition_root//\//\\/} rw/
+" syslinux.cfg
 
