@@ -50,6 +50,7 @@ then
   url="https://www.archlinux.org/mirrorlist/?country=PL&country=DE&country=CZ&use_mirror_status=on"
   tmpfile=$(mktemp --suffix=-mirrorlist)
   curl -so ${tmpfile} ${url}
+  sed -i 's/^#Server/Server/g' ${tmpfile}
 
   mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
   mv ${tmpfile} /etc/pacman.d/mirrorlist
