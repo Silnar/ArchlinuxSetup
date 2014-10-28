@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -ex
+set -o pipefail
+
 readonly user="silnar"
 readonly user_password="silnar"
 
@@ -23,7 +26,7 @@ pacman_install_packages() {
 }
 
 yaourt_install_packages() {
-  su - ${user} -c "yaourt --noconfirm -S $@"
+  su - ${user} -c "yaourt --noconfirm -S $*"
 }
 
 # Create user
@@ -56,7 +59,7 @@ fi
 # }}}
 
 # i3 WM {{{
-if install_i3_wm
+if $install_i3_wm
 then
   arch_packages+=(
     xorg-server
@@ -94,13 +97,16 @@ then
     gst-libav
   )
   aur_packages+=(
-    ttf-monaco
     ttf-ms-fonts
     ttf-vista-fonts
     ttf-win7-fonts
   )
 fi
 # }}}
+
+# Install packages
+pacman_install_packages ${arch_packages[@]}
+yaourt_install_packages ${aur_packages[@]}
 
 # Configure packages
 systemctl enable NetworkManager
@@ -139,10 +145,6 @@ then
   echo "export TERMINAL=konsole" > /etc/profile.d/i3-terminal.sh
 fi
 # }}}
-
-# Install packages
-pacman_install_packages ${arch_packages[@]}
-yaourt_install_packages ${aur_packages[@]}
 
 # Revoke user permission to install pacman packages
 rm /etc/sudoers.d/pacman

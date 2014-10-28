@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -ex
+set -o pipefail
+
 readonly hostname="archlinux"
 readonly root_password="root"
 readonly partition_root="${1}"

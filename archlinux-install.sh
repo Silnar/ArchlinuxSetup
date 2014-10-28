@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -ex
+set -o pipefail
+
 readonly setup_partitions=true
 readonly mount_partitions=true
 readonly install_base=true
