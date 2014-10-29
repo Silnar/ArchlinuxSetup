@@ -13,6 +13,11 @@ echo "$hostname" > /etc/hostname
 # Set initial timezone
 ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 
+# Enable NTP
+sed -i -e 's/^#NTP.*/NTP=0.pl.pool.ntp.org 1.pl.pool.ntp.org 2.pl.pool.ntp.org 3.pl.pool.ntp.org/' /etc/systemd/timesyncd.conf
+sed -i -e 's/^#FallbackNTP.*/FallbackNTP=0.arch.pool.ntp.org 1.arch.pool.ntp.org 2.arch.pool.ntp.org 3.arch.pool.ntp.org/' /etc/systemd/timesyncd.conf
+timedatectl set-ntp true
+
 # Set initial locale
 echo LANG=pl_PL.UTF-8 > /etc/locale.conf
 sed -i '

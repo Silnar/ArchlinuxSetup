@@ -134,15 +134,8 @@ then
   vboxvideo
 EOL
 
-  # Force load vbox modules now
-  while read module
-  do
-    modprobe "$module"
-  done < /etc/modules-load.d/virtualbox.conf
-
   # Start vboxservice
   systemctl enable vboxservice
-  systemctl start vboxservice
   echo "VBoxClient-all &" >> /etc/xprofile
 fi
 # }}}
