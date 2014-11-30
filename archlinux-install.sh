@@ -78,7 +78,7 @@ fi
 # Configure system {{{
 if $configure_system
 then
-  arch-chroot /mnt /bin/bash -s - $partition_root < archlinux-configure.sh
+  arch-chroot /mnt /bin/bash -s - "$partition_root" < archlinux-configure.sh
 fi
 # }}}
 
