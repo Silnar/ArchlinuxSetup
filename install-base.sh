@@ -12,12 +12,13 @@ readonly setup_system=true
 readonly partition_boot=/dev/sda1
 readonly partition_root=/dev/sda2
 
-# Check internet
+# Check internet connection {{{
 wget -q --tries=10 --timeout=20 --spider http://google.com
 if [[ ! $? -eq 0 ]]; then
   echo "Internet unavailable. Aborting..."
   exit 1
 fi
+# }}}
 
 # Setup partitions {{{
 if $setup_partitions
@@ -78,7 +79,7 @@ fi
 # Configure system {{{
 if $configure_system
 then
-  arch-chroot /mnt /bin/bash -s - "$partition_root" < archlinux-configure.sh
+  arch-chroot /mnt /bin/bash -s - "$partition_root" < install-configure-base.sh
 fi
 # }}}
 

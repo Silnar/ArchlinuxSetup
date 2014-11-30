@@ -7,18 +7,15 @@ readonly hostname="archlinux"
 readonly root_password="root"
 readonly partition_root="${1}"
 
-# Set initial hostname
+# Set initial hostname {{{
 echo "$hostname" > /etc/hostname
+# }}}
 
-# Set initial timezone
+# Set initial timezone {{{
 ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+# }}}
 
-# Enable NTP
-sed -i -e 's/^#NTP.*/NTP=0.pl.pool.ntp.org 1.pl.pool.ntp.org 2.pl.pool.ntp.org 3.pl.pool.ntp.org/' /etc/systemd/timesyncd.conf
-sed -i -e 's/^#FallbackNTP.*/FallbackNTP=0.arch.pool.ntp.org 1.arch.pool.ntp.org 2.arch.pool.ntp.org 3.arch.pool.ntp.org/' /etc/systemd/timesyncd.conf
-timedatectl set-ntp true
-
-# Set initial locale
+# Set locale {{{
 echo LANG=pl_PL.UTF-8 > /etc/locale.conf
 sed -i '
 /^#pl_PL.UTF-8 UTF-8/s/^#//
@@ -30,27 +27,30 @@ sed -i '
 ' /etc/locale.conf
 locale-gen
 
-# Set locale
 echo LANG=pl_PL.UTF-8 > /etc/locale.conf
+# }}}
 
-# Configure vconsole
+# Configure vconsole {{{
 cat <<END > /etc/vconsole.conf
 KEYMAP=pl
 FONT=lat2-16
 FONT_MAP=8859-2
 END
+# }}}
 
-# Create a new initial RAM disk
+# Create a new initial RAM disk {{{
 mkinitcpio -p linux
+# }}}
 
-# Set root password to "root"
+# Set root password {{{
 echo root:$root_password | chpasswd
+# }}}
 
-# Install syslinux bootloader
+# Install syslinux bootloader {{{
 pacman -S syslinux --noconfirm
 syslinux-install_update -i -a -m
 
-# Update syslinux config with correct root disk
+# Use archlinux theme
 curl -o /boot/syslinux/splash.png https://projects.archlinux.org/archiso.git/plain/configs/releng/syslinux/splash.png
 sed -i -e "
   /UI menu.c32/s/^/# /
@@ -70,4 +70,6 @@ MENU HELPMSGROW 16\\
 MENU HELPMSGENDROW 29
   s/APPEND root=.*rw/APPEND root=${partition_root//\//\\/} rw/
 " /boot/syslinux/syslinux.cfg
+# }}}
 
+# vim: fdm=marker
