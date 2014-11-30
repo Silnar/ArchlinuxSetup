@@ -9,6 +9,7 @@ readonly add_user=true
 readonly install_sudo=true
 readonly install_yaourt=true
 readonly install_virtualbox_modules=true
+readonly install_system_utils=true
 
 # Check internet connection {{{
 wget -q --tries=10 --timeout=20 --spider http://google.com
@@ -103,6 +104,26 @@ EOL
 
   systemctl enable vboxservice
   echo "VBoxClient-all &" >> /etc/xprofile
+fi
+# }}}
+
+# Install system utils {{{
+if $install_system_utils
+then
+  pacman_install_packages \
+    alsa-utils \
+    btrfs-progs \
+    elinks \
+    htop \
+    ntfs-3g \
+    pwgen \
+    rfkill \
+    rsync \
+    smartmontools \
+    traceroute \
+    unrar \
+    zsh \
+    zsh-completions
 fi
 # }}}
 
