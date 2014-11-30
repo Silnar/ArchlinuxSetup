@@ -3,7 +3,7 @@
 set -ex
 set -o pipefail
 
-source setup-config.sh
+source ./setup-config.sh
 
 readonly install_basic_apps=true
 readonly install_i3_wm=true

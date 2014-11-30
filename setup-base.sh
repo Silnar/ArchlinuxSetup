@@ -3,12 +3,21 @@
 set -ex
 set -o pipefail
 
-source setup-config.sh
+source ./setup-config.sh
 
 readonly add_user=true
 readonly install_sudo=true
 readonly install_yaourt=true
 readonly install_virtualbox_modules=true
+
+# Check internet connection {{{
+wget -q --tries=10 --timeout=20 --spider http://google.com
+if [[ ! $? -eq 0 ]]; then
+  echo "Internet unavailable. Aborting..."
+  echo "Try running: systemctl start dhcpcd"
+  exit 1
+fi
+# }}}
 
 # Helper functions {{{
 aur_install_packages() {
