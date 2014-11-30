@@ -83,13 +83,6 @@ then
 fi
 # }}}
 
-# Setup system {{{
-if $setup_system
-then
-  arch-chroot /mnt /bin/bash < archlinux-setup.sh
-fi
-# }}}
-
 # Unmount partitions {{{
 if $mount_partitions
 then
