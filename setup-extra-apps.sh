@@ -113,6 +113,9 @@ pacman_install_packages \
   stellarium \
   unison \
   virtualbox
+
+yaourt_install_packages \
+  plantuml
 # }}}
 
 # vim: fdm=marker
